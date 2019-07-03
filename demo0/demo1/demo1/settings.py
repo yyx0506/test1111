@@ -55,7 +55,8 @@ ROOT_URLCONF = 'demo1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #模板路径  get_template  调用的路径
+        'DIRS': [os.path.join(BASE_DIR,"templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,19 +76,19 @@ WSGI_APPLICATION = 'demo1.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
     # 'default': {
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #         'NAME': 'mysqldemo1',
-    #         'USER':'root',
-    #         'PASSWORD': 'root',
-    #         'HOST': '192.168.13.133',
-    #         'PORT': 3306
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+    'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': 'mysqldemo1',
+            'USER':'root',
+            'PASSWORD': 'root',
+            # 'HOST': '192.168.13.133',
+            # 'PORT': 3306
+    }
 
 }
 # Password validation
