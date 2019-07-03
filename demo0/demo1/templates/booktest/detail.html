@@ -8,5 +8,16 @@
     <p>显示详情</p>
     <a href="/">回到首页</a>
     <a href="/list/">回到列表页</a>
+    <h3>当前书籍为：{{book.title}}</h3>
+    {% if book.heroinfo_set.count %}
+        <h3>拥有角色</h3>
+        <ul>
+            {% for hero in book.heroinfo_set.all %}
+            <li>{{hero.name}} -- 技能:{{ hero.content}}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>没有角色</h3>
+    {% endif %}
 </body>
 </html>

@@ -6,8 +6,13 @@
 </head>
 <body>
     <h2>列表页</h2>
-    <a href="/detail/1/">跳转到详情1</a>
-    <a href="/detail/2/">跳转到详情2</a>
-    <a href="/detail/3/">跳转到详情3</a>
+    <h3>显示书籍</h3>
+    {{book.id}}
+    <ul>
+        {% for book in books%}
+        <li><a href="/detail/{{book.id}}/">{{book.title}}-- {{ book.pub_date }}</a></li>
+        {% endfor%}
+    </ul>
+
 </body>
 </html>
