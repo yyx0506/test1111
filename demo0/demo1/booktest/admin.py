@@ -15,7 +15,5 @@ class HeroInfoAdmin(admin.ModelAdmin):
     list_display = ("name","content","gender")
     list_filter = ("name","content","gender")
     list_per_page = 1
-
-
 admin.site.register(Bookinfo,BookinfoAdmin)
 admin.site.register(HeroInfo,HeroInfoAdmin)

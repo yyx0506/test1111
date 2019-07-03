@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.template import loader
+# from django.template import loader
 # Create your views here.
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from .models import Bookinfo,HeroInfo
 #自定义视图函数   绑定路由
 def index(request):
@@ -16,21 +16,34 @@ def index(request):
 def list(request):
     books = Bookinfo.objects.all()
     return render(request,"booktest/list.html",{"books":books})
-
     # temp1=loader.get_template("booktest/list.html")
     # result=temp1.render({"books":books})
     # return HttpResponse(result)
-
     # return HttpResponse("这是一个列表页%s"%(s,))
 def detail(request,id):
     book = Bookinfo.objects.get(pk=id)
     return render(request,"booktest/detail.html",{"book":book})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # temp1 = loader.get_template("booktest/detail.html")
     # print(id)
-
     # result = temp1.render({'book':book})
     # return HttpResponse(result)
     # return HttpResponse("这是一个%s详情页 <a href='/'>跳转到首页</a>"%(id,))
+
+
 
 
 
