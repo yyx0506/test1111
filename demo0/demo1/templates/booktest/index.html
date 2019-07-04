@@ -11,7 +11,9 @@
 <h1>首页</h1>
 <p>当前用户：<span class="username">{{ username }}</span></p>
 <!--<img src="/static/img/bg-login.png" alt="">-->
-<a href="/list/">跳转列表页</a>
+{# <a href="/list/">跳转列表页</a> #}
+<a href="{% url 'booktest:list' %}">跳转列表页</a>
+
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
