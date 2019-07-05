@@ -4,7 +4,8 @@ from django.db import models
 class Bookinfo(models.Model):
     title=models.CharField(max_length=20)
     pub_date=models.DateTimeField(auto_now=True)
-
+    def __str__(self):
+        return self.title
 
 class HeroInfo(models.Model):
     name=models.CharField(max_length=20)

@@ -7,4 +7,4 @@ def list(request):
     return render(request,"newbook/list.html",{"books":books})
 def detail(request,id):
     book = Newbook.objects.get(pk=id)
-    return render(request,"newbook/detail.html",{"book":book})
+    return render(request,"newbook/result.html",{"book":book})

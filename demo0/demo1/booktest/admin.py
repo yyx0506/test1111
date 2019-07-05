@@ -9,11 +9,13 @@ class HeroInfoinline(admin.StackedInline):
 class BookinfoAdmin(admin.ModelAdmin):
     list_display = ("title","pub_date")
     list_filter = ("title","pub_date")
-    list_per_page = 1
+    # list_per_page = 1
     inlines = [HeroInfoinline]
+
 class HeroInfoAdmin(admin.ModelAdmin):
-    list_display = ("name","content","gender")
+    list_display = ("name","content","gender","book")
     list_filter = ("name","content","gender")
-    list_per_page = 1
+    # list_per_page = 1
+
 admin.site.register(Bookinfo,BookinfoAdmin)
 admin.site.register(HeroInfo,HeroInfoAdmin)

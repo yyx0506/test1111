@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/js/main.js"></script>
+</head>
+<body>
+<div align="center">
+    <h1>首页</h1>
+
+    <div  style="width: 50%;height: 200px;background-color: greenyellow;">
+    <ul>
+        <p>选择要投票的信息</p>
+        {% for questure in list%}
+        <li><a href="{% url 'listtest:list' questure.id %}">{{ questure.question_text }}</a></li>
+        {% endfor%}
+
+    </ul>
+        <a href="{% url 'listtest:newquestion' %}">添加新的投票信息</a>
+    </div></div>
+<!--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">-->
+    <!--&lt;!&ndash; Indicators &ndash;&gt;-->
+    <!--<ol class="carousel-indicators">-->
+        <!--<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>-->
+        <!--<li data-target="#carousel-example-generic" data-slide-to="1"></li>-->
+        <!--&lt;!&ndash;<li data-target="#carousel-example-generic" data-slide-to="2"></li>&ndash;&gt;-->
+    <!--</ol>-->
+
+    <!--&lt;!&ndash; Wrapper for slides &ndash;&gt;-->
+    <!--<div class="carousel-inner" role="listbox">-->
+        <!--<div class="item active">-->
+            <!--<div align="center">-->
+                <!--<img src="/static/img/1.jpg" alt="...">-->
+            <!--</div>-->
+            <!--<div class="carousel-caption">-->
+               <!--图片1-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="item">-->
+            <!--<div align="center">-->
+                <!--<img src="/static/img/1.jpg" alt="...">-->
+            <!--</div>-->
+            <!--<div class="carousel-caption">-->
+                <!--图片2-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--...-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; Controls &ndash;&gt;-->
+    <!--<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">-->
+        <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+        <!--<span class="sr-only">Previous</span>-->
+    <!--</a>-->
+    <!--<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">-->
+        <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+        <!--<span class="sr-only">Next</span>-->
+    <!--</a>-->
+<!--</div>-->
+
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

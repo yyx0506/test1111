@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+<div style="width: 50%;height: 200px;background-color: greenyellow;">
+    <h2>投票选择</h2>
+        <p>当前选择的问题是:{{question.question_text}}</p>
+        <form action="{% url 'listtest:list' question.id %}" method="post">
+            {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choose" value="{{ choice.id }}"/>
+            <label for="choose">{{ choice.choice_text }}</label><br/>
+            {% endfor %}
+            <input type="submit" class="btn btn-default" value="投票"/>
+        </form>
+</div>
+</div>
+</body>
+</html>
