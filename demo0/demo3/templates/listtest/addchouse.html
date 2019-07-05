@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>新增投票选择</h2>
+        <p>当前投票问题是：{{ question.question_text }}</p>
+        <p>请输入你要增加的投票选择信息</p>
+        <form action="{% url 'listtest:addchouse' question.id %}" method="post">
+            <input type="text" name="addchouse" id="choose" >
+            <input type="submit" class="btn btn-default" value="添加"/>
+        </form>
+</body>
+</html>

@@ -10,7 +10,7 @@
 <div style="width: 50%;height: 200px;background-color: greenyellow;">
     <ul>
     {% for choice in question.choice_set.all %}
-        <li>{{ choice.choice_text }} -- {{ choice.votes }} </li>
+        <li>{{ choice.choice_text }} -------------- {{ choice.votes }}票 </li>
     {% endfor %}
         <a href="/">回到主页</a>
     </ul>
