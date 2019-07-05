@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h1>投票页</h1>
+    <div  style="width: 50%;height: 200px;background-color: greenyellow;">
+    <p>当前的投票问题是：{{ question.question }}</p>
+        <form action="{% url 'newvote:list' question.id %}" method="post">
+            <ul>
+                {% for c in question.chioce_set.all %}
+                    {% if forloop.counter == 1 %}
+                    <li><input type="radio" checked name="cc" value="{{ c.id }}">{{ c.chioce }}</li>
+                    {% else %}
+                    <li><input type="radio" name="cc" value="{{ c.id }}">{{ c.chioce }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <input type="submit" value="投票" class="btn btn-default" />
+        </form>
+        <a href="{% url 'newvote:addchouse' question.id %}">添加投票选项</a>
+</div></div>
+</body>
+</html>

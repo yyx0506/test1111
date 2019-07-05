@@ -19,7 +19,8 @@ def list(request, id):
     elif request.method == 'POST':
         name = request.POST.get("choice")
         id=Choice.objects.get(pk=name)
-        id.votes += 1
+        # id.votes += 1
+        id.incresvotes()
         id.save()
         return redirect(reverse("listtest:result", args=(question.id,)))
 # #展示相应的投票具体信息

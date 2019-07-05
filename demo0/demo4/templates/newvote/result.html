@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div align="center">
+        <h1>投票结果详情页</h1>
+    <div  style="width: 50%;height: 200px;background-color: greenyellow;">
+    <p>当前的投票问题是：{{ question.question }}</p>
+        <ul>
+            {% for c in question.chioce_set.all %}
+            <li>选项：{{ c.chioce }}----------{{ c.votes }}票</li>
+            {% endfor %}
+        </ul>
+        <a href="/" class="btn btn-default">回到主页</a>
+        </div></div>
+</body>
+</html>

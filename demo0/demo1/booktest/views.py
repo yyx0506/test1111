@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,reverse
 from django.template import loader
 # Create your views here.
 from django.http import HttpResponse
-from .models import Bookinfo,HeroInfo
+from .models import Bookinfo,HeroInfo,HeroInfoManage
 from django.views.generic import View,ListView
 
 
@@ -15,7 +15,7 @@ class Listview(ListView):
     template_name = "booktest/list.html"
     context_object_name = "books"
     def queryset(self):
-        return Bookinfo.objects.all()[:1]
+        return Bookinfo.objects.all()
 #返回渲染的结果
 def list(request):
     books = Bookinfo.objects.all()
@@ -44,12 +44,13 @@ def addhero(request,id):
         name=request.POST.get("username")
         content=request.POST.get("content")
         gender= request.POST.get("gender")
-        hero=HeroInfo()
-        hero.name=name
-        hero.content=content
-        hero.book=book
-        hero.gender=gender
-        hero.save()
+        HeroInfo.object.addhero(name,content,book,gender)
+        # hero=HeroInfo()
+        # hero.name=name
+        # hero.content=content
+        # hero.book=book
+        # hero.gender=gender
+        # hero.save()
         return redirect(reverse("booktest:detail",args=(id,)))
 
 

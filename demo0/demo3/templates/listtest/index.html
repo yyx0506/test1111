@@ -12,7 +12,8 @@
     <h1>首页</h1>
 
     <div  style="width: 50%;height: 200px;background-color: greenyellow;">
-    <ul>
+
+        <ul>
         <p>选择要投票的信息</p>
         {% for questure in list%}
         <li><a href="{% url 'listtest:list' questure.id %}">{{ questure.question_text }}</a></li>

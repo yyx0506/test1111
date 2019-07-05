@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h1>首页</h1>
+
+    <div  style="width: 50%;height: 200px;background-color: greenyellow;">
+
+        <h1>所有问题信息汇总</h1>
+    <ul>
+        {% for q in question %}
+            <li><a href="{% url 'newvote:list' q.id %}">{{ q.question }}</a></li>
+        {% endfor %}
+    </ul>
+       <a href="{% url 'newvote:newquestion' %}">添加新的投票信息</a>
+    </div></div>
+</body>
+</html>
