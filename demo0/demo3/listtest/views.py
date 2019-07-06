@@ -30,7 +30,7 @@ def result(request,id):
 #添加新的投票信息
 def newquestion(request):
     if request.method == 'GET':
-        return render(request,'listtest/newquestion.html')
+        return render(request,'listtest/newbook.html')
     elif request.method == 'POST':
         newquestion = request.POST.get("newquestion")
         n1=Question()
@@ -41,7 +41,7 @@ def newquestion(request):
 def addchouse(request,id):
     question = Question.objects.get(pk=id)
     if request.method == 'GET':
-        return render(request,'listtest/addchouse.html',{"question":question})
+        return render(request,'listtest/addhero.html',{"question":question})
     elif request.method == 'POST':
         newquestion = request.POST.get("addchouse")
         n1=Choice()

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h1>书籍添加页</h1>
+    <div style="width: 50%;height: 200px;background-color: greenyellow;">
+        <h2>新增书籍</h2>
+        <p>请输入你要增加的书籍信息</p>
+        <form action="{% url 'herotest:newbook'%}" method="post">
+            <input type="text" name="newbook" id="choose">
+            <input type="submit" class="btn btn-default" value="添加"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

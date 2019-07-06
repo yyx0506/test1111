@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h1>英雄详细页</h1>
+    <div style="width: 50%;height: 200px;background-color: greenyellow;">
+        <h1>请选择具体的英雄了解</h1>
+        <p>当前书籍是:{{ hero.book.name }}</p>
+        <p>英雄名称：{{ hero.name }}</p>
+        {% if hero.gender == "man" %}
+            <p>性别是：男</p>
+        {% else %}
+            <p>性别是:女</p>
+        {% endif %}
+        <p>技能是：{{ hero.content }}</p>
+    </div>
+    <a href="{% url 'herotest:index' %}">回到主页</a>
+    <a href="{% url 'herotest:list' %}">回到书籍页</a>
+</div>
+</body>
+</html>

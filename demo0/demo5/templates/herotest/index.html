@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h1>首页</h1>
+    <div style="width: 50%;height: 200px;background-color: greenyellow;">
+        <h1>欢迎来到书籍英雄介绍</h1>
+        <p>当前登录用户是：{{ username }}</p>
+        <a href="{% url 'herotest:list' %}"><input type="button" value="查看书籍列表"></a>
+    </div>
+
+</div>
+</body>
+</html>

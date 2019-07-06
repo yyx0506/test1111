@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h1>书籍列表页</h1>
+    <div style="width: 50%;height: 200px;background-color: greenyellow;">
+        <h1>请选择具体的书籍了解</h1>
+        <ul>
+            {% for book in bookinfo %}
+            <li><a href="{% url 'herotest:detail' book.id %}">书籍名称：{{ book.name }}-------发布日期::{{ book.pub_datime }}</a>----<a
+                    href="{% url 'herotest:deletebook' book.id %}">删除</a></li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'herotest:newbook'  %}">添加书籍</a>
+    </div>
+</div>
+
+</body>
+</html>

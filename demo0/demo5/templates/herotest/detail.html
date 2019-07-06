@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div align="center">
+    <h1>书籍详细页</h1>
+    <div style="width: 50%;height: 200px;background-color: greenyellow;">
+        <p>当前书籍是:{{ book.name }}</p>
+        {% if book.hero_set.count %}
+            <h1>请选择具体的英雄了解</h1>
+            <ul>
+                {% for hero in book.hero_set.all %}
+                <li>英雄名称：<a href="{% url 'herotest:heroinfo' hero.id %}">{{ hero.name }}</a>
+                    <a href="{% url 'herotest:deletehero' hero.id %}">删除英雄</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>没有英雄</h2>
+        {% endif %}
+        <a href="{% url 'herotest:addhero' book.id %}">添加英雄</a>
+        <a href="{% url 'herotest:index' %}">回到主页</a>
+        <a href="{% url 'herotest:list' %}">回到书籍页</a>
+    </div>
+</div>
+</body>
+</html>
