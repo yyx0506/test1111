@@ -45,12 +45,7 @@ def addhero(request,id):
         content=request.POST.get("content")
         gender= request.POST.get("gender")
         HeroInfo.object.addhero(name,content,book,gender)
-        # hero=HeroInfo()
-        # hero.name=name
-        # hero.content=content
-        # hero.book=book
-        # hero.gender=gender
-        # hero.save()
+
         return redirect(reverse("booktest:detail",args=(id,)))
 
 

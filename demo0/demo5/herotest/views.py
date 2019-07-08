@@ -1,5 +1,13 @@
 from django.shortcuts import render,reverse,redirect
 from .models import Book,Hero
+from django.http import HttpResponse
+
+# def newindex(request):
+#     print(request.COOKIES["name"])
+#     res= HttpResponse("newindex")
+#     res.set_cookie("name","yyx")
+#     return res
+
 
 # Create your views here.
 def index(request):
@@ -39,5 +47,4 @@ def addhero(request,id):
         newherogender=request.POST.get("gender")
         Hero.objects.addhero(newheroname, newherocontent, book, newherogender)
         return redirect(reverse("herotest:detail",args=(book.id,)))
-
 

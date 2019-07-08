@@ -19,6 +19,8 @@ from django.conf.urls import url,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('',include("herotest.urls",namespace="herotest"))
+    url('cellmall/',include("cellmall.urls",namespace="cellmall")),
+    url('',include("herotest.urls",namespace="herotest")),
+
 
 ]
