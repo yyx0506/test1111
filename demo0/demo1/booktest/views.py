@@ -2,13 +2,25 @@ from django.shortcuts import render,redirect,reverse
 from django.template import loader
 # Create your views here.
 from django.http import HttpResponse
-from .models import Bookinfo,HeroInfo,HeroInfoManage
+from .models import Bookinfo,HeroInfo,HeroInfoManage,Ads
 from django.views.generic import View,ListView
 
 
+class Addimg(View):
+    def get(self,request):
+        # return  HttpResponse('打开上传页面')
+        return render(request,"booktest/addimg.html")
+    def post(self,request):
+        ads=Ads()
+        ads.title=request.POST.get('title')
+        ads.img=request.FILES['addimg']
+        ads.save()
+        return  HttpResponse('上传成功')
+
 #自定义视图函数   绑定路由
 def index(request):
-    return render(request,"booktest/index.html",{"username":"yyx"})
+    ads=Ads.objects.all()
+    return render(request,"booktest/index.html",{"username":"yyx",'ads':ads})
 
 class Listview(ListView):
     model = Bookinfo

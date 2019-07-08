@@ -11,4 +11,5 @@ urlpatterns=[
     url(r'^deletehero/(\d+)/$',views.deletehero,name='deletehero'),
     url(r'^deletebook/(\d+)/$',views.deletebook,name='deletebook'),
     url(r'^addhero/(\d+)/$',views.addhero,name='addhero'),
+    url(r'^addimg/$',views.Addimg.as_view(),name='addimg')
 ]

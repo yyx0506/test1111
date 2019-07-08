@@ -8,8 +8,13 @@
 <div align="center">
     <h1>首页</h1>
 
-    <div  style="width: 50%;height: 200px;background-color: greenyellow;">
+    <br>
+    {% if username and request.user.is_authenticated  %}
+        当前用户是{{ request.user }}
+        <a href="{% url 'newvote:logout' %}">退出登录</a>
 
+    {% endif %}
+    <div  style="width: 50%;height: 200px;background-color: greenyellow;">
         <h1>所有问题信息汇总</h1>
     <ul>
         {% for q in question %}

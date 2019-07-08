@@ -17,30 +17,42 @@
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        {% for a in ads %}
+        {% if forloop.counter == 1 %}
+        <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+        {% else %}
+        <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}"></li>
+        {% endif %}
+        {% endfor %}
+
+
         <!--<li data-target="#carousel-example-generic" data-slide-to="2"></li>-->
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
+        {% for a in ads %}
+        {% if forloop.counter == 1 %}
         <div class="item active">
             <div align="center">
-                <img src="/static/img/1.jpg" alt="...">
+                <img src="/{{ a.img }}" alt="...">
             </div>
             <div class="carousel-caption">
-               图片1
+                {{ a.title }}
             </div>
         </div>
+        {% else %}
         <div class="item">
             <div align="center">
-                <img src="/static/img/1.jpg" alt="...">
+                <img src="/{{ a.img }}" alt="...">
             </div>
             <div class="carousel-caption">
-                图片2
+                 {{ a.title }}
             </div>
         </div>
-        ...
+        {% endif %}
+        {% endfor %}
+
     </div>
 
     <!-- Controls -->
