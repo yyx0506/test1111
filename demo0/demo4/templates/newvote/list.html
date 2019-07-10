@@ -10,6 +10,7 @@
     <div  style="width: 50%;height: 200px;background-color: greenyellow;">
     <p>当前的投票问题是：{{ question.question }}</p>
         <form action="{% url 'newvote:list' question.id %}" method="post">
+            {% csrf_token %}
             <ul>
                 {% for c in question.chioce_set.all %}
                     {% if forloop.counter == 1 %}

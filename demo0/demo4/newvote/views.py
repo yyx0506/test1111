@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,reverse
 from .models import *
+from .form import LoginForm,RegistForm
 # Create your views here.
+from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from django.contrib.auth import login as loi ,logout as lot,authenticate
 
 def checklogin(fun):
@@ -17,47 +19,74 @@ def checklogin(fun):
     return checklog
 
 def logout(request):
-    #注册
+    #删除使用cookie
     # print(dir(request.COOKIES))
     # res=redirect(reverse("newvote:login"))
     # res.delete_cookie('username')
     # return res
+    #删除使用session
     # request.session.flush()
+    #使用授权模块
     lot(request)
     return redirect(reverse("newvote:login"))
 def regist(request):
-    if request.method =="POST":
-        username=request.POST.get("username")
-        password=request.POST.get("password")
-        try:
-            user=MyUser.objects.create_user(username=username,password=password)
-        except :
-            user=None
-        if user:
+    form=LoginForm()
+    rgf=RegistForm()
+    if request.method == 'GET':
+        return render(request, "newvote/login.html", locals())
+    elif request.method == "POST":
+        rgf = RegistForm(request.POST)
+        if rgf.is_valid():
+            user=rgf.save(commit=False)
+            user.set_password(rgf.cleaned_data["password"])
+            user.save()
             return redirect(reverse("newvote:login"))
         else:
-            return render(request,'newvote/login.html',{'erros':'注册失败'})
+            return render(request, 'newvote/login.html', {'erros': '注册失败'},locals())
+    # if request.method =="POST":
+    #     username=request.POST.get("username")
+    #     password=request.POST.get("password")
+    #     try:
+    #         user=MyUser.objects.create_user(username=username,password=password)
+    #     except :
+    #         user=None
+    #     if user:
+    #         return redirect(reverse("newvote:login"))
+    #     else:
+    #         return render(request,'newvote/login.html',{'erros':'注册失败'})
 def login(request):
+    form=LoginForm()
+    rgf=RegistForm()
     if request.method == 'GET':
-        return render(request,"newvote/login.html")
+        return render(request,"newvote/login.html",locals())
     elif request.method == 'POST':
+        #表单类自建
+        lgf = LoginForm(request.POST)
+        if lgf.is_valid():
+            username = lgf.cleaned_data["username"]
+            password = lgf.cleaned_data["password"]
+            user = authenticate(request, username=username, password=password)
+
+            if user:
+                loi(request,user)
+                return redirect(reverse("newvote:index"))
+            else:
+                return render(request,"newvote/login.html",{'erros':'登录失败'},locals())
         #使用cookie
         # responce=redirect(reverse("newvote:index"))
         #使用session
         # responce.set_cookie("username",request.POST.get("username"))
         # return responce
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        try:
-            user = authenticate(request, username=username, password=password)
-        except  :
-            user=None
+        # username=request.POST.get('username')
+        # password=request.POST.get('password')
 
-        if user:
-            loi(request,user)
-            return redirect(reverse("newvote:index"))
-        else:
-            return render(request,"newvote/login.html",{'erros':'登录失败'})
+
+        #判断是否登陆成功授权
+        # try:
+        #     user = authenticate(request, username=username, password=password)
+        # except  :
+        #     user=None
+
         # request.session['username']=request.POST.get("username")
         # return redirect(reverse("newvote:index"))
 
