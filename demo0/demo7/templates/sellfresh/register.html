@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-注册</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="/static/js/register.js"></script>
+</head>
+<body>
+	<div class="register_con">
+		<div class="l_con fl">
+			<a class="reg_logo"><img src="/static/images/logo02.png"></a>
+			<div class="reg_slogan">足不出户  ·  新鲜每一天</div>
+			<div class="reg_banner"></div>
+		</div>
+
+		<div class="r_con fr">
+			<div class="reg_title clearfix">
+				<h1>用户注册</h1>
+				<a href="{% url 'sellfresh:login' %}">登录</a>
+			</div>
+			<div class="reg_form clearfix">
+				<p>{{ erros }}</p>
+				<form method="post" action="{% url 'sellfresh:regist' %}">
+				<ul>
+					{% csrf_token %}
+
+					<li>
+						<label>用户名:</label>
+						{{ rgf.username }}
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>密码:</label>
+						{{ rgf.password }}
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>确认密码:</label>
+						{{ rgf.repeatpassword }}
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>邮箱:</label>
+						{{ rgf.email }}
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>手机号:</label>
+						{{ rgf.telephone }}
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li class="agreement">
+						<input type="checkbox" name="allow" id="allow" checked="checked">
+						<label>同意”天天生鲜用户使用协议“</label>
+						<br><br><br>
+						<b id="info"></b>
+					</li>
+					<li class="reg_sub">
+
+						<input id="btn-reg" type="submit" value="注 册" name="">
+					</li>
+				</ul>				
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="footer no-mp">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	<script>
+		$(function () {
+			$('#btn-reg').click(function () {
+				if($('#allow').prop('checked') == false){
+					$('#info').text("请勾选同意")
+				}
+			})
+
+		})
+	</script>
+</body>
+</html>

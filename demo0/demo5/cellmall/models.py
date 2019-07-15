@@ -24,7 +24,6 @@ class LoginManage(models.Manager):
                 uu.save()
                 tips = "注册成功"
             return tips
-
 class User(models.Model):
     username=models.CharField(max_length=20)
     password=models.CharField(max_length=11)

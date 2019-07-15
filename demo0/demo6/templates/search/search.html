@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+</head>
+<body>
+    <p>搜索的内容为：{{ query }}</p>
+    <p>一下为搜索内容</p>
+{{ page.object_list }}
+{% for o in page.object_list %}
+    <p>{{ o.object.title }}</p>
+    <p>{{ o.object.body }}</p>
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+<title>博客详细</title>
+{% endblock %}
+{% block body %}
+<main class="col-md-8">
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">{{ art.title }}</h1>
+            <div class="entry-meta">
+                <span class="post-category"><a href="#">{{ art.category.title }}</a></span>
+                <span class="post-date"><a href="#"><time class="entry-date"
+                                                          datetime="2012-11-09T23:15:57+00:00">{{ art.create_time }}</time></a></span>
+                <span class="post-author"><a href="#">{{ art.author }}</a></span>
+                <span class="comments-link"><a href="#">{{ art.comment_set.count }} 评论</a></span>
+                <span class="views-count"><a href="#">{{ art.view }} 阅读</a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            {{ art.body|safe }}
+        </div>
+    </article>
+    <section class="comment-area" id="comment-area">
+        <hr>
+        <div class="comment-form">
+        <h3>发表评论</h3>
+        <div class="row" >
+                <div class="col-md-4">
+                    <label >名字：</label>
+                    {{ com.author }}
+                </div>
+                <div class="col-md-4">
+                    <label >邮箱：</label>
+                    {{ com.email }}
+                </div>
+                <div class="col-md-4">
+                    <label >网址：</label>
+                    {{ com.url }}
+                </div>
+                <div class="col-md-12">
+                    <label >评论：</label>
+                    {{ com.body }}
+                    <button id="btn_commit" class="comment-btn">发表</button>
+                </div>
+            </div>
+
+
+        <div class="comment-list-panel">
+            <h3>评论列表，共 <span id="qwe">{{ art.comment_set.count }}</span> 条评论</h3>
+            <ul class="comment-list list-unstyled" id="commentlist">
+                {% for i in art.comment_set.all %}
+                <li class="comment-item">
+                    <span class="nickname" id="comauthor">{{ i.author }}</span>
+                    <time class="submit-date" id="comtime" datetime="2012-11-09T23:15:57+00:00">{{ i.create_time }}</time>
+                    <div class="text" >
+                        {{ i.body }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+            </div>
+    </section>
+</main>
+<script>
+    $(function () {
+        $("#btn_commit").click(function () {
+            $.ajax({
+                url:"{% url 'comment:comment' art.id %}",
+                type:"post",
+                data:{
+                    "csrfmiddlewaretoken":"{{csrf_token}}",
+                    "author":$("#id_author").val(),
+                    "email":$("#id_email").val(),
+                    "url":$("#id_url").val(),
+                    "body":$("#id_body").val()
+                },
+                success:function (data) {
+                    console.log(data);
+                    a=Number($('#qwe').text())
+                    $('#qwe').text((a+1)+"")
+                    $('#id_author').val("")
+                    $('#id_body').val("")
+                    $('#id_email').val("")
+                    $('#commentlist').append('<li class="comment-item"><span class="nickname">'+data.author+'</span><time class="submit-date" datetime="2012-11-09T23:15:57+00:00">'+data.time+'</time><div class="text">'+data.body+'</div></li>');
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

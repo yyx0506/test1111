@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>天天生鲜-登录</title>
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+</head>
+<body>
+<div class="login_top clearfix">
+    <a href="index.html" class="login_logo"><img src="/static/images/logo02.png"></a>
+</div>
+
+<div class="login_form_bg">
+    <div class="login_form_wrap clearfix">
+        <div class="login_banner fl"></div>
+        <div class="slogan fl">日夜兼程 · 急速送达</div>
+        <div class="login_form fr">
+            <div class="login_title clearfix">
+                <h1>用户登录</h1>
+                <a href="#">立即注册</a>
+            </div>
+            <div class="form_input" >
+                <form method="post" action="{% url 'sellfresh:login' %}">
+                    {% csrf_token %}
+                    {{ form.username }}
+                    {{ form.password }}
+                    <br><br><br><br><br><br><br>
+                    <div >
+
+                        <label for="verify">验证码:-----></label><input type="button" id="btn_img" value="看不清换一张" class="btn btn-default">
+                        <br>
+
+                        <img id="iimg" src="/verify" alt="" style="position: relative;top: 5px">
+                            <input id="verify" type="text" name="verify" style="width: 200px;height: 35px;position: relative;top: -7px">
+                    </div>
+                    <!--<div class="more_input clearfix">-->
+                        <!--<input type="checkbox" name="">-->
+                        <!--<label>记住用户名</label>-->
+                        <!--<a href="#">忘记密码</a>-->
+                    <!--</div>-->
+                    <br><br>
+                    <input type="submit" name="" value="登录" class="input_submit">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="footer no-mp">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2019 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+    <p>电话：010-****888 京ICP备*******8号</p>
+</div>
+<script>
+    $(function () {
+
+        $('#btn_img').click(function () {
+
+            $(this).siblings('#iimg').attr('src', '/verify/?t=' + new Date().getTime())
+        })
+        $("#username").blur(function () {
+            $.ajax({
+                url: "{% url 'sellfresh:checkuser' %}",
+                "type": "get",
+                "data": {
+                    "name": $(this).val()
+                },
+                success: function (data) {
+                    if (data.state == 0) {
+                       alert( data.errorinfo )
+                    }
+                }
+            })
+        });
+
+    })
+</script>
+</body>
+</html>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import sys
 import os
+#将路径添加第三方模块以及应用存放路径
 sys.path.insert(0,'extract_apps')
 sys.path.insert(0,'apps')
 
@@ -43,9 +44,14 @@ INSTALLED_APPS = [
     'crispy_forms',
     'blog',
     'comment',
+    'DjangoUeditor',
+    'haystack'
 ]
 
+
 MIDDLEWARE = [
+    # 缓存整个Django页面两个中间件  一个必须在第一个一个必须在最后面
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'demo6.simplemiddleware.SimpleMiddleware',
+    #最后一个中间件
+    #'django.middleware.cache.UpdateCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'demo6.urls'
@@ -78,14 +87,21 @@ WSGI_APPLICATION = 'demo6.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+#与数据库交互
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+#redis缓存
+CACHES = {
+"default": {
+"BACKEND": "redis_cache.cache.RedisCache",
+"LOCATION": "localhost:6379",
+'TIMEOUT': 60,
+},
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -108,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
-
+#关于时间的设置
 LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
@@ -125,3 +141,32 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
+
+#动态实现上传图片
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+MEDIA_URL='/media/'
+MEDIAFILES_DIRS=[os.path.join(BASE_DIR,'media')]
+#搜索
+HAYSTACK_CONNECTIONS = {
+    'default': {
+    'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
+    'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+
+
+#激活邮件内容
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True #是否使用TLS安全传输协议(用于在两个通信应用程序之间提供保密性和数据完整性。 )
+EMAIL_USE_SSL = False #是否使用SSL加密， qq企业邮箱要求使用
+EMAIL_HOST = 'smtp.163.com' #发送邮件的邮箱 的 SMTP服务器， 这里用了163邮箱
+EMAIL_PORT = 25 #发件箱的SMTP服务器端口
+EMAIL_HOST_USER = 'yyxyanyuxiang@163.com' #发送邮件的邮箱地址
+EMAIL_HOST_PASSWORD = 'wuqing6691878'
+DEFAULT_FROM_EMAIL = 'zzy0371 <18137128152@163.com>'
+

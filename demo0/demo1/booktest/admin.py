@@ -4,14 +4,11 @@ from .models import *
 class HeroInfoinline(admin.StackedInline):
     model = HeroInfo
     extra = 1
-
-
 class BookinfoAdmin(admin.ModelAdmin):
     list_display = ("title","pub_date")
     list_filter = ("title","pub_date")
     # list_per_page = 1
     inlines = [HeroInfoinline]
-
 class HeroInfoAdmin(admin.ModelAdmin):
     list_display = ("name","content","gender","book")
     list_filter = ("name","content","gender")
