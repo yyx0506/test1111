@@ -133,7 +133,7 @@ def checklogin(fun):
         if request.user and request.user.is_authenticated:
             return fun(self,request,*args)
         else:
-            return JsonResponse({"state":0})
+            return redirect(reverse("sellfresh:login"))
     return checklog
 #查看商品属性
 class Detail(View):
