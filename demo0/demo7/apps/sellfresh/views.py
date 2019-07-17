@@ -1,8 +1,8 @@
 
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Myuser
+from .models import Myuser,Address,Cart,Order
 from django.views import View
-from .form import RegistForm,LoginForm
+from .form import RegistForm,LoginForm,FormAddress
 from django.core.paginator import Paginator, Page
 # Create your views here.
 from django.contrib.auth import login as loi, logout as lot, authenticate
@@ -13,18 +13,18 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.cache import cache_page
+from goods.models import *
 #主页面的显示
 class Index(View):
     def get(self,request):
         username=request.user
+        ads = Ads.objects.all()
+        alltype=TypeInfo.objects.all()
         return render(request,"sellfresh/index.html",locals())
     def post(self,request):
         pass
 
-
 # 图片验证码功能
-
-
 def verify(request):
 # 定义变量， 用于画面的背景色、 宽、 高
     bgcolor = (random.randrange(20, 100),
@@ -76,11 +76,11 @@ def checkuser(request):
             return JsonResponse({"state":1})
         else:
             return JsonResponse({"state":0,'errorinfo':"用户名不存在"})
-
+#退出重定向到主页
 def logout(request):
     lot(request)
     return redirect(reverse("sellfresh:index"))
-
+#注册成功直接跳转到登录
 def regist(request):
     form = LoginForm()
     rgf = RegistForm()
@@ -102,7 +102,7 @@ def regist(request):
             return redirect(reverse("sellfresh:login"))
         else:
             return render(request, 'sellfresh/register.html', {'erros': '注册失败'}, locals())
-
+#登录成功直接跳转到主页面
 def login(request):
     form = LoginForm()
     rgf = RegistForm()
@@ -127,7 +127,7 @@ def login(request):
             else:
                 return render(request, "sellfresh/login.html", {'erros': '登录失败'}, locals())
 
-
+#对为登录的功能进行检索
 def checklogin(fun):
     def checklog(self,request,*args):
         if request.user and request.user.is_authenticated:
@@ -138,15 +138,77 @@ def checklogin(fun):
 #查看商品属性
 class Detail(View):
     def get(self,request,id):
-        pass
+        good=Goodsinfo.objects.get(pk=id)
+        good.goodsclick+=1
+        good.save()
+        return render(request,"sellfresh/detail.html",locals())
+
+    @checklogin
     def post(self,request,id):
         pass
 class Usercenter(View):
     @checklogin
     def get(self,request):
         username=request.user
+        good_ids=request.COOKIES.get("good_ids","")
+        good_ids1=good_ids.split(",")
+        good_list=[]
+        for good_id in good_ids1:
+            good_list.append(Goodsinfo.objects.get(id= int(good_id)))
+
         return render(request,"sellfresh/user_center_info.html",locals())
     def post(self,request):
         pass
-
+#购物车
+class Cart(View):
+    @checklogin
+    def get(self,request):
+        username=request.user
+        return render(request,"sellfresh/cart.html",locals())
+    def post(self,request):
+        pass
+#订单
+class Order(View):
+    @checklogin
+    def get(self,request):
+        username = request.user
+        return render(request, "sellfresh/user_center_order.html", locals())
+    def post(self,request):
+        pass
+#个人地址操作
+class AddAddress(View):
+    @checklogin
+    def get(self,request):
+        username=request.user
+        myuser=Myuser.objects.filter(username=username)[0]
+        # print(myuser.address_set.count())
+        address=FormAddress()
+        return render(request,"sellfresh/user_center_site.html",locals())
+    def post(self,request):
+        at = get_object_or_404(Address, user=request.user)
+        username = request.user
+        ads = FormAddress(request.POST)
+        com = ads.save(commit=False)
+        com.author = at
+        com.save()
+        return redirect(reverse("sellfresh:address", args=(at.id,username)))
+#同步加载地址
+class Alladdress(View):
+    def post(self,request):
+        person=request.POST.get("person")
+        address=request.POST.get("address")
+        zip=request.POST.get("zip")
+        telephone=request.POST.get("telephone")
+        myuser=Myuser.objects.filter(username=request.user.username)[0]
+        c=Address()
+        c.person=person
+        c.address=address
+        c.zip=zip
+        c.telephone=telephone
+        c.author=myuser
+        c.isdefadd="否"
+        c.save()
+        # a = time.localtime()
+        # x = time.strftime("%Y{}-%m{}-%d{} %H:%M", (a[0], a[1], a[2], a[3], a[4], 0, 0, 0, 0)).format("年", "月", "日",)
+        return JsonResponse({"person":c.person,"address":c.address,"zip":c.zip,"telephone":c.telephone})
 

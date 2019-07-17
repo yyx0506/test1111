@@ -1,35 +1,68 @@
 {% extends 'sellfresh/userbase.html' %}
 {% block body %}
 <div class="right_content clearfix">
-				<h3 class="common_title2">收货地址</h3>
-				<div class="site_con">
-					<dl>
-						<dt>当前地址：</dt>
-						<dd>北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
-					</dl>					
-				</div>
-				<h3 class="common_title2">编辑地址</h3>
-				<div class="site_con">
-					<form>
-						<div class="form_group">
-							<label>收件人：</label>
-							<input type="text" name="">
-						</div>
-						<div class="form_group form_group2">
-							<label>详细地址：</label>
-							<textarea class="site_area"></textarea>
-						</div>
-						<div class="form_group">
-							<label>邮编：</label>
-							<input type="text" name="">
-						</div>
-						<div class="form_group">
-							<label>手机：</label>
-							<input type="text" name="">
-						</div>
+    <h3 class="common_title2">收货地址</h3>
+    <P>当前总共有<span id="qwe">{{ myuser.address_set.count }}</span>个收货地址</P>
+    <div class="site_con" id="addresslist">
+        {% for i in myuser.address_set.all %}
+        <div id="{{ i.id }}">
+            <p>联系人：{{ i.person }}</p>
+            <p>详细地址：{{ i.address }}</p>
+            <p>邮编：{{ i.zip }}</p>
+            <p>电话：{{ i.telephone }}</p>
+            <p>是否为默认地址：{{ i.isdefadd }}</p>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+    <h3 class="common_title2">新增地址</h3>
+    <div class="site_con">
+        <div class="form_group">
+            <label>收件人：</label>
+            {{ address.person }}
+        </div>
+        <div class="form_group form_group2">
+            <label>详细地址：</label>
+            {{ address.address }}
+        </div>
+        <div class="form_group">
+            <label>邮编：</label>
+            {{ address.zip }}
+        </div>
+        <div class="form_group">
+            <label>手机：</label>
+            {{ address.telephone }}
+        </div>
+        <button id="btn_commit" class="comment-btn">提交</button>
 
-						<input type="submit" name="" value="提交" class="info_submit">
-					</form>
-				</div>
-		</div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+<script>
+    $(function () {
+        $("#btn_commit").click(function () {
+            $.ajax({
+                url: "{% url 'sellfresh:alladdress' %}",
+                type: "post",
+                data: {
+                    "csrfmiddlewaretoken": "{{csrf_token}}",
+                    "person": $("#id_person").val(),
+                    "address": $("#id_address").val(),
+                    "zip": $("#id_zip").val(),
+                    "telephone": $("#id_telephone").val()
+                },
+                success: function (data) {
+                    console.log(data);
+                    a = Number($('#qwe').text())
+                    $('#qwe').text((a + 1) + "")
+                    $('#id_person').val("")
+                    $('#id_address').val("")
+                    $('#id_zip').val("")
+                    $('#id_telephone').val("")
+                    $('#addresslist').append('<p>联系人:' + data.person + '</p><p>详细地址' + data.address + '</p><p>邮编:' + data.zip + ' }}</p><p>电话:' + data.telephone + '</p>');
+                }
+            })
+        })
+    })
+</script>
 {% endblock %}

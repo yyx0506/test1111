@@ -1,11 +1,10 @@
 from django import forms
-from .models import Myuser
+from .models import Myuser,Address
 
-#
-# class FormComment(forms.ModelForm):
-#     class Meta:
-#         model=Comment
-#         fields = ["body", "author", "email", "url"]
+class FormAddress(forms.ModelForm):
+    class Meta:
+        model=Address
+        fields = ["person", "address", "zip", "telephone"]
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="用户名", max_length=20, required=True, widget=forms.TextInput(

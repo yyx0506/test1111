@@ -129,6 +129,7 @@ def getpage(request, object_list, per_num):
     page = Paginator(object_list, per_num).get_page(pagenum)
     return page, left_has_more, right_has_more
 
+
 @cache_page(60)
 def blog(request):
     ads = Ads.objects.all()
@@ -197,7 +198,6 @@ class Addartical(View):
             art.save()
             return redirect(reverse("blog:blog"))
         else:
-
           return render(request, 'blog/addartical.html', {'erros': '发布失败'}, locals())
 
 
