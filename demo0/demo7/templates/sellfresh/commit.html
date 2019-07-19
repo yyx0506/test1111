@@ -1,0 +1,40 @@
+{% extends 'sellfresh/base.html' %}
+{% block index %}
+
+
+<h3 class="common_title" id='{{ order.ordernumber }}'>商品列表<span>订单号：<span
+        id="orderid">{{ order.ordernumber }}</span></span></h3>
+<div class="common_list_con clearfix">
+    <ul class="goods_list_th clearfix">
+        <li class="col01">商品名称</li>
+        <li class="col02">商品单位</li>
+        <li class="col03">商品价格</li>
+        <li class="col04">数量</li>
+        <li class="col05">小计</li>
+    </ul>
+    {% for i in oo %}
+
+    {% for j in i.orderinfo_set.all %}
+
+    <ul class="goods_list_td clearfix" id="{{ j.id }}">
+        <li class="col01">{{ i.ordernumber }}</li>
+        <li class="col02"><img src="/media/{{ j.goods.pic }}"></li>
+        <li class="col03">{{ j.goods.title }}</li>
+        <li class="col04">{{ j.goods.danwei }}</li>
+        <li class="col05">{{ j.goods.price }}元</li>
+        <li class="col06">{{ j.count }}</li>
+        <li class="col07">{{ j.allprice }}<span>元</span></li>
+    </ul>
+    <div>
+        <h3>对该商品进行评价</h3>
+        <textarea type="text"></textarea>
+        <button id="btn_commit" class="comment-btn">发表</button>
+    </div>
+    {% endfor %}
+    {% endfor %}
+</div>
+<script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+<script>
+
+</script>
+{% endblock %}

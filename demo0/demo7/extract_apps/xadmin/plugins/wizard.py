@@ -312,8 +312,8 @@ class WizardFormPlugin(BaseAdminPlugin):
 
     def get_step_index(self, step=None):
         """
-        Returns the index for the given `step` name. If no step is given,
-        the current step will be used to get the index.
+        Returns the indexes for the given `step` name. If no step is given,
+        the current step will be used to get the indexes.
         """
         if step is None:
             step = self.steps.current

@@ -209,7 +209,7 @@ class EditRelateDisplayPlugin(BaseRelateDisplayPlugin):
 
     def post_response(self, response):
         cls_str = str if six.PY3 else basestring
-        if isinstance(response, cls_str) and response != self.get_admin_url('index'):
+        if isinstance(response, cls_str) and response != self.get_admin_url('indexes'):
             return self._get_url(response)
         return response
 
@@ -226,7 +226,7 @@ class DeleteRelateDisplayPlugin(BaseRelateDisplayPlugin):
 
     def post_response(self, response):
         cls_str = str if six.PY3 else basestring
-        if isinstance(response, cls_str) and response != self.get_admin_url('index'):
+        if isinstance(response, cls_str) and response != self.get_admin_url('indexes'):
             return self._get_url(response)
         return response
 

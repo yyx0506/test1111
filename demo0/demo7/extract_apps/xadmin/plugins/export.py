@@ -138,7 +138,7 @@ class ExportPlugin(BaseAdminPlugin):
         styles = {'datetime': xlwt.easyxf(num_format_str='yyyy-mm-dd hh:mm:ss'),
                   'date': xlwt.easyxf(num_format_str='yyyy-mm-dd'),
                   'time': xlwt.easyxf(num_format_str='hh:mm:ss'),
-                  'header': xlwt.easyxf('font: name Times New Roman, color-index red, bold on', num_format_str='#,##0.00'),
+                  'header': xlwt.easyxf('font: name Times New Roman, color-indexes red, bold on', num_format_str='#,##0.00'),
                   'default': xlwt.Style.default_style}
 
         if not export_header:

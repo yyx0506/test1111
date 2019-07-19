@@ -257,7 +257,7 @@ class ChangeAccountPasswordView(ChangePasswordView):
         if self.form.is_valid():
             self.form.save()
             self.message_user(_('Password changed successfully.'), 'success')
-            return HttpResponseRedirect(self.get_admin_url('index'))
+            return HttpResponseRedirect(self.get_admin_url('indexes'))
         else:
             return self.get_response()
 

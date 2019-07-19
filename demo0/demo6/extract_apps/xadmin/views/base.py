@@ -477,7 +477,7 @@ class CommAdminView(BaseAdminView):
     @filter_hook
     def get_breadcrumb(self):
         return [{
-            'url': self.get_admin_url('index'),
+            'url': self.get_admin_url('indexes'),
             'title': _('Home')
         }]
 

@@ -443,13 +443,13 @@ class CreateAdminView(ModelFormAdminView):
 
             # Figure out where to redirect. If the user has change permission,
             # redirect to the change-list page for this object. Otherwise,
-            # redirect to the admin index.
+            # redirect to the admin indexes.
             if "_redirect" in request.POST:
                 return request.POST["_redirect"]
             elif self.has_view_permission():
                 return self.model_admin_url('changelist')
             else:
-                return self.get_admin_url('index')
+                return self.get_admin_url('indexes')
 
 
 class UpdateAdminView(ModelFormAdminView):
@@ -537,7 +537,7 @@ class UpdateAdminView(ModelFormAdminView):
             self.message_user(msg, 'success')
             # Figure out where to redirect. If the user has change permission,
             # redirect to the change-list page for this object. Otherwise,
-            # redirect to the admin index.
+            # redirect to the admin indexes.
             if "_redirect" in request.POST:
                 return request.POST["_redirect"]
             elif self.has_view_permission():
@@ -547,7 +547,7 @@ class UpdateAdminView(ModelFormAdminView):
                     change_list_url += '?' + self.request.session['LIST_QUERY'][1]
                 return change_list_url
             else:
-                return self.get_admin_url('index')
+                return self.get_admin_url('indexes')
 
 
 class ModelFormAdminUtil(ModelFormAdminView):

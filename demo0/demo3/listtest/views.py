@@ -9,7 +9,7 @@ from django.views.generic import View,ListView
 def index(request):
     list = Question.objects.all()
     context = {'list': list}
-    return render(request, 'listtest/index.html', context)
+    return render(request, 'listtest/indexes.html', context)
 #查看问题的选择答案
 def list(request, id):
     question = Question.objects.get(pk=id)
@@ -36,7 +36,7 @@ def newquestion(request):
         n1=Question()
         n1.question_text=newquestion
         n1.save()
-        return redirect(reverse("listtest:index"))
+        return redirect(reverse("listtest:indexes"))
 #添加新的投票选择
 def addchouse(request,id):
     question = Question.objects.get(pk=id)

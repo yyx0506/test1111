@@ -69,11 +69,11 @@ def login(request):
 
             if user:
                 loi(request,user)
-                return redirect(reverse("newvote:index"))
+                return redirect(reverse("newvote:indexes"))
             else:
                 return render(request,"newvote/login.html",{'erros':'登录失败'},locals())
         #使用cookie
-        # responce=redirect(reverse("newvote:index"))
+        # responce=redirect(reverse("newvote:indexes"))
         #使用session
         # responce.set_cookie("username",request.POST.get("username"))
         # return responce
@@ -88,13 +88,13 @@ def login(request):
         #     user=None
 
         # request.session['username']=request.POST.get("username")
-        # return redirect(reverse("newvote:index"))
+        # return redirect(reverse("newvote:indexes"))
 
 @checklogin
 def index(request):
     question = Question.objects.all()
     username=request.user
-    return render(request, "newvote/index.html", locals())
+    return render(request, "newvote/indexes.html", locals())
     # print(request.user,request.user.is_authenticated)
     # user=MyUser.objects.create_user(username='yyx',email="154564565412@qq.com",password="123")
     # print(user,user.is_authenticated)
@@ -135,7 +135,7 @@ def newquestion(request):
         n1=Question()
         n1.question=newquestion
         n1.save()
-        return redirect(reverse("newvote:index"))
+        return redirect(reverse("newvote:indexes"))
 #添加新的投票选择
 @checklogin
 def addchouse(request,id):

@@ -107,7 +107,7 @@ class ResetPasswordCompleteView(BaseAdminView):
 
     def get(self, request, *args, **kwargs):
         context = super(ResetPasswordCompleteView, self).get_context()
-        context['login_url'] = self.get_admin_url('index')
+        context['login_url'] = self.get_admin_url('indexes')
 
         return TemplateResponse(request, self.password_reset_complete_template, context)
 

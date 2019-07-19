@@ -140,7 +140,8 @@ def blog(request):
     #     if i>0 and i<Paginator(art,1).num_pages:
     #         art.append(i)
     page, left_has_more, right_has_more = getpage(request, art, 1)
-    return render(request, "blog/index.html", locals())
+    return render(request, "blog/indexes.html", locals())
+
 class Single(View):
     def get(self, request, id):
         username = request.user
@@ -163,7 +164,7 @@ class Archives(View):
         ads = Ads.objects.all()
         article = Artical.objects.filter(createtime__year=year, createtime__month=month)
         page, left_has_more, right_has_more = getpage(request, article, 1)
-        return render(request, "blog/index.html", locals())
+        return render(request, "blog/indexes.html", locals())
     def post(self, request):
         pass
 # 通过不同的分类得到不同的文章
@@ -172,7 +173,7 @@ class Cateart(View):
         ads = Ads.objects.all()
         article = Artical.objects.filter(category=id)
         page, left_has_more, right_has_more = getpage(request, article, 1)
-        return render(request, "blog/index.html", locals())
+        return render(request, "blog/indexes.html", locals())
     def post(self, request):
         pass
 # 通过不同的标签得到不同的文章
@@ -181,7 +182,7 @@ class Tagart(View):
         ads = Ads.objects.all()
         article = Artical.objects.filter(tag=id)
         page, left_has_more, right_has_more = getpage(request, article, 1)
-        return render(request, "blog/index.html", locals())
+        return render(request, "blog/indexes.html", locals())
     def post(self, request):
         pass
 # 增加文章

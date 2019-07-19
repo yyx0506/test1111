@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Newbook
 def index(request):
-    return render(request,"newbook/index.html",{"username":"杨超越"})
+    return render(request,"newbook/indexes.html",{"username":"杨超越"})
 def list(request):
     books = Newbook.objects.all()
     return render(request,"newbook/list.html",{"books":books})

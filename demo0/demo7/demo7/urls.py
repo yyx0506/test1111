@@ -27,4 +27,5 @@ urlpatterns = [
     url("",include("goods.urls",namespace="goods")),
     url(r'ueditor/',include('DjangoUeditor.urls')),
     url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT}),
+    url('search/',include('haystack.urls')),
 ]

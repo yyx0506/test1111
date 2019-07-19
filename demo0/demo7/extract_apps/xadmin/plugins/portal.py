@@ -33,7 +33,7 @@ class ModelFormPlugin(BasePortalPlugin):
             if not getattr(c, 'css_id', None):
                 c.css_id = 'column-%d' % i
 
-        # make fieldset index
+        # make fieldset indexes
         fs = []
         get_layout_objects(layout, Fieldset, fs)
         fs_map = {}

@@ -11,7 +11,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return render(request,"herotest/index.html",{"username":"杨超越"})
+    return render(request,"herotest/indexes.html",{"username":"杨超越"})
 def list(request):
     bookinfo=Book.objects.all()
     return render(request,"herotest/list.html",locals())

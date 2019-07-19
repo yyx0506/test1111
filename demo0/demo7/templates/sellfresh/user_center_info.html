@@ -28,10 +28,10 @@
                 <li>
                 <a href="{% url 'goods:detail' i.id %}"><img src="/media/{{ i.pic }}"></a>
                 <h4><a href="{% url 'goods:detail' i.id %}">{{ i.title }}</a></h4>
-                <div class="operate">
-                    <span class="prize">￥{{ i.price }}</span>
+                <div class="operate" id="{{ i.id }}">
+                    <span class="prize" id="oneprice">{{ i.price }}</span>
                     <span class="unit">{{ i.price }}/{{ i.danwei }}</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
+                    <a href="javascript:;" class="add_goods" title="加入购物车"></a>
                 </div>
             </li>
             {% endfor %}
@@ -41,4 +41,31 @@
         </ul>
     </div>
 </div>
+<script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+<script>
+    $(".add_goods").click(function () {
+            num = 1;
+            console.log($(this).siblings("#oneprice"))
+            pp=$(this).siblings("#oneprice").text()
+            console.log(pp)
+            price = parseFloat(pp);
+            gid=$(this).parent('.operate').attr('id')
+            total = num * price;
+            $.ajax({
+                url: "{% url 'sellfresh:addgoods' %}",
+                type: "post",
+                data: { "csrfmiddlewaretoken": "{{csrf_token}}",
+                        "num":num,
+                        "gid":gid,
+                        "total":total,
+                        "oneprice":price},
+                success: function (data){
+                    alert(data.status)
+                    // a = Number($('#show_count').text())
+                    $('#show_count').text(data.count)
+            }
+            }
+            )
+        });
+</script>
 {% endblock %}

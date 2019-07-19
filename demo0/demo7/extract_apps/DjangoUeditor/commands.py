@@ -43,7 +43,7 @@ class UEditorCommand(object):
 
     def __init__(self, **kwargs):
         self.uiName = kwargs.pop("uiName", "")
-        self.index = kwargs.pop("index", 0)
+        self.index = kwargs.pop("indexes", 0)
         self.title = kwargs.pop("title", self.uiName)
         self.ajax_url = kwargs.pop("ajax_url", "")
 
@@ -106,7 +106,7 @@ class UEditorCommand(object):
             "registerCommand": self.render_command(),
             "uiName": self.uiName,
             "uiObject": self.render_ui(editorID),
-            "index": self.index,
+            "indexes": self.index,
             "editor": editorID
         }
 
@@ -174,7 +174,7 @@ class UEditorComboCommand(UEditorCommand):
         var combox = new UE.ui.Combox({
             editor:editor,
             items:%(items)s,
-            onselect:function (t, index) {
+            onselect:function (t, indexes) {
                 %(onselect)s
             },
             title:'%(title)s',

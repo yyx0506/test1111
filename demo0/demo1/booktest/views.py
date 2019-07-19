@@ -20,7 +20,7 @@ class Addimg(View):
 #自定义视图函数   绑定路由
 def index(request):
     ads=Ads.objects.all()
-    return render(request,"booktest/index.html",{"username":"yyx",'ads':ads})
+    return render(request,"booktest/indexes.html",{"username":"yyx",'ads':ads})
 
 class Listview(ListView):
     model = Bookinfo

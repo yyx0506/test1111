@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='ads',
-            name='index',
+            name='indexes',
             field=models.IntegerField(),
         ),
         migrations.AlterField(

@@ -21,6 +21,6 @@ urlpatterns=[
     url(r'^myorder/$',views.Zhifudingdan.as_view(),name='myorder'),
     url(r'^orderagain/$',views.Orderagain.as_view(),name='orderagain'),
     url(r'^updateorder/$',views.Updateorder.as_view(),name="updateorder"),
-
+    url(r'^commit/$',views.Commint.as_view(),name='commit')
 
 ]

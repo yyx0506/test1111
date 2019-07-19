@@ -54,7 +54,6 @@
                 gprice.push(price);
             }
                         });
-        console.log(gidlist,gcount,gprice);
         $.ajax({
             url: "{% url 'sellfresh:getorder' %}",
             type: "post",
@@ -92,6 +91,7 @@
         })
        total()
     });
+
     $(function () {
         //全选，全消
         $('#check_all').click(function () {

@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Myuser,Address,Cart,Order,Orderinfo
 from django.views import View
-from .form import RegistForm,LoginForm,FormAddress
+from .form import RegistForm,LoginForm,FormAddress,FormComment
 from django.core.paginator import Paginator, Page
 # Create your views here.
 from django.contrib.auth import login as loi, logout as lot, authenticate
@@ -331,6 +331,20 @@ class Updateorder(View):
             return JsonResponse({"status": 0,"orderid":orderid})
         elif oo.status == '已付款':
             return JsonResponse({"status": 1,"orderid":orderid})
+#对已付款订单进行评价
+class Commint(View):
+    @checklogin
+    def get(self,request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        oo=Order.objects.filter(status='已付款')
+        com = FormComment()
+        return render(request,'sellfresh/commit.html',locals())
+    @checklogin
+    def post(self,request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+
 
 #个人地址操作
 class AddAddress(View):

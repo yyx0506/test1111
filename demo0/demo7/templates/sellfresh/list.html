@@ -52,10 +52,10 @@
             <li>
                 <a href="{% url 'goods:detail' i.id %}"><img src="/media/{{ i.pic }}"></a>
                 <h4><a href="{% url 'goods:detail' i.id %}">{{ i.title }}</a></h4>
-                <div class="operate">
-                    <span class="prize">{{ i.price }}</span>
+                <div class="operate" id="{{ i.id }}">
+                    <span class="prize" id="oneprice">{{ i.price }}</span>
                     <span class="unit">{{ i.price }}/{{ i.danwei }}</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
+                    <a href="javascript:;" class="add_goods" title="加入购物车"></a>
                 </div>
             </li>
             {% endfor %}
@@ -97,24 +97,29 @@
     </div>
 </div>
 <script>
-    // $("#i1").click(function () {
-    //     $("#i1").siblings("a").removeClass("active")
-	// 	$("#i1").attr('class','active')
-    // });
-    // $("#i2").click(function () {
-    //     $("#i2").siblings("a").removeClass("active")
-	// 	$("#i2").attr('class','active')
-    // });
-    // $("#i3").click(function () {
-    //     $("#i3").siblings("a").removeClass("active")
-	// 	$("#i3").attr('class','active')
-    // });
-    // $("#i4").click(function () {
-    //     $("#i4").siblings("a").removeClass("active")
-	// 	$("#i4").attr('class','active')
-    // });
+    $(".add_goods").click(function () {
+            num = 1;
+            pp=$("#oneprice").text()
+            console.log(pp)
+            price = parseFloat(pp);
+            total = num * price;
+            $.ajax({
+                url: "{% url 'sellfresh:addgoods' %}",
+                type: "post",
+                data: { "csrfmiddlewaretoken": "{{csrf_token}}",
+                        "num":num,
+                        "gid":$('.operate').attr('id'),
+                        "total":total,
+                        "oneprice":price},
+                success: function (data){
+                    alert(data.status)
+                    // a = Number($('#show_count').text())
+                    $('#show_count').text(data.count)
+            }
+            }
+            )
 
 
-
+        });
 </script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Myuser,Address
+from .models import Myuser,Address,Comment
 
 class FormAddress(forms.ModelForm):
     class Meta:
@@ -25,3 +25,7 @@ class RegistForm(forms.ModelForm):
         help_texts={'username':''}
         # labels={"username":"用户名","password":"密码","telephone":"手机号"}
 
+class FormComment(forms.ModelForm):
+    class Meta:
+        model=Comment
+        fields = ["comment"]
