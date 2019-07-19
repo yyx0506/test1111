@@ -20,6 +20,7 @@ def getpage(request, object_list, per_num):
         right_has_more = True
     page = Paginator(object_list, per_num).get_page(pagenum)
     return page, left_has_more, right_has_more
+#商品详情并用COOKIES临时存储值
 class Detail(View):
     def get(self,request,id):
         username=request.user
@@ -29,16 +30,15 @@ class Detail(View):
         type = good.goodstype
         news = type.goodsinfo_set.order_by('-id')[0:2]
         responce=render(request,"sellfresh/detail.html",locals())
-        good_ids=request.COOKIES.get("goods_ids","")
+        good_ids=request.COOKIES.get("good_ids","")
         good_id='%d'%good.id
-
         if good_ids != '':
             good_ids1=good_ids.split(",")
-            if good_ids1.count >= 1:
+            if good_ids1.count(good_id) >= 1:
                 good_ids1.remove(good_id)
             good_ids1.insert(0,good_id)
             if len(good_ids1) >= 6:
-                del good_ids[5]
+                del good_ids1[5]
             good_ids=",".join(good_ids1)
         else :
             good_ids=good_id
@@ -46,31 +46,24 @@ class Detail(View):
         return responce
     @checklogin
     def post(self,request):
-        uid=request.user.id
-        print(uid)
-        return HttpResponse("ssss")
-
-
+        pass
 #分类列表全显示
 class List(View):
     def get(self,request,id,choose):
         username=request.user
         typeop=TypeInfo.objects.get(pk=id)
-        print(typeop.id)
+        #新品推荐最新的两个物品
         news=typeop.goodsinfo_set.order_by('-id')[0:2]
-        print(choose,type(choose))
+        #选择不同按钮的到不同的列表排序
         if choose == '1':
-            print('111111')
             goods=Goodsinfo.objects.filter(goodstype=id)
         elif choose == '2':
-            print('22222')
             goods=Goodsinfo.objects.filter(goodstype=id).order_by('price')
         elif choose == '3':
-            print('33333333')
             goods=Goodsinfo.objects.filter(goodstype=id).order_by('-price')
         else :
-            print('44444444444')
             goods = Goodsinfo.objects.filter(goodstype=id).order_by('-goodsclick')
+        #对所有的物品进行分页处理
         page, left_has_more, right_has_more = getpage(request, goods, 1)
         return render(request,"sellfresh/list.html",locals())
     def post(self):

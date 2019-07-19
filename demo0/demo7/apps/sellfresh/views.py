@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Myuser,Address,Cart,Order
+from .models import Myuser,Address,Cart,Order,Orderinfo
 from django.views import View
 from .form import RegistForm,LoginForm,FormAddress
 from django.core.paginator import Paginator, Page
@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.cache import cache_page
 from goods.models import *
+import time
 #主页面的显示
 class Index(View):
     def get(self,request):
@@ -79,7 +80,9 @@ def checkuser(request):
 #退出重定向到主页
 def logout(request):
     lot(request)
-    return redirect(reverse("sellfresh:index"))
+    res = redirect(reverse("sellfresh:index"))
+    res.delete_cookie('good_ids')
+    return res
 #注册成功直接跳转到登录
 def regist(request):
     form = LoginForm()
@@ -91,7 +94,6 @@ def regist(request):
         if rgf.is_valid():
             user = rgf.save(commit=False)
             #对密码进行加密
-
             user.set_password(rgf.cleaned_data["password"])
             user.save()
             # OOlist=["yyxyanyuxiang@163.com"]
@@ -146,35 +148,190 @@ class Detail(View):
     @checklogin
     def post(self,request,id):
         pass
+#个人主页
 class Usercenter(View):
     @checklogin
     def get(self,request):
         username=request.user
         good_ids=request.COOKIES.get("good_ids","")
-        good_ids1=good_ids.split(",")
-        good_list=[]
-        for good_id in good_ids1:
-            good_list.append(Goodsinfo.objects.get(id= int(good_id)))
-
+        if good_ids:
+            good_ids1=good_ids.split(",")
+            good_list=[]
+            for good_id in good_ids1:
+                good_list.append(Goodsinfo.objects.get(id= int(good_id)))
+        else :
+            good_list = 0
         return render(request,"sellfresh/user_center_info.html",locals())
     def post(self,request):
         pass
 #购物车
-class Cart(View):
+class Cartlist(View):
     @checklogin
     def get(self,request):
         username=request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        uid=request.user.id
+        print(uid)
+        cart=Cart.objects.filter(author=uid)
+        print(cart)
         return render(request,"sellfresh/cart.html",locals())
     def post(self,request):
         pass
-#订单
-class Order(View):
+#添加商品给购物车
+
+class Addgoodscart(View):
+    def get(self,request):
+        pass
+    @checklogin
+    def post(self,request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        print(myuser.id)
+        gid=request.POST.get("gid")
+        num=request.POST.get("num")
+        total=request.POST.get("total")
+        oneprice=request.POST.get("oneprice")
+        good = Goodsinfo.objects.get(pk=gid)
+        carts=Cart.objects.filter(goods=gid,author=myuser.id)
+        if len(carts)>=1:
+            cart=carts[0]
+            cart.goodsnumber+=int(num)
+            cart.goodsprice+=cart.oneprice*int(num)
+        else:
+            cart=Cart()
+            cart.goodsprice=total
+            cart.goodsnumber=num
+            cart.goods=good
+            cart.oneprice=oneprice
+            cart.author=myuser
+        cart.save()
+        count=Cart.objects.all().count()
+        return JsonResponse({"status":"添加成功","count":count})
+
+#购物车中动态修改ajax
+def edit(request):
+    username = request.user
+    myuser = Myuser.objects.filter(username=username)[0]
+    cart_id=request.POST.get("cart_id")
+    count=request.POST.get("count")
+    cartone=Cart.objects.get(pk=cart_id)
+    cartone.goodsnumber=count
+    cartone.goodsprice=cartone.oneprice*int(count)
+    cartone.save()
+    data={"cart_id":cartone.id,"cart_total":cartone.goodsprice}
+    return JsonResponse(data)
+#删除购物车
+def deletegoods(request):
+    username = request.user
+    myuser = Myuser.objects.filter(username=username)[0]
+    cart_id = request.POST.get("cart_id")
+    cartone = Cart.objects.get(pk=cart_id)
+    cartone.delete()
+    count = Cart.objects.all().count()
+    data = {"cart_id": cart_id,"count":count}
+    return JsonResponse(data)
+
+#全部订单列表包括未付款和已付款
+class Orderlist(View):
     @checklogin
     def get(self,request):
         username = request.user
-        return render(request, "sellfresh/user_center_order.html", locals())
+        myuser = Myuser.objects.filter(username=username)[0]
+        order=Order.objects.filter(author=myuser.id)
+        return render(request,"sellfresh/user_center_order.html",locals())
     def post(self,request):
         pass
+
+#订单详细处理加入初步订单
+class Getorder(View):
+    @checklogin
+    def get(self, request):
+        pass
+    def post(self, request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        cart_id = request.POST.getlist("cart_id[]")
+        count = request.POST.getlist("count[]")
+        price = request.POST.getlist("price[]")
+        ss=len(cart_id)
+        tt=int(str(int(time.time()*1000000))[6:16])
+        o=Order()
+        o.author=myuser
+        o.ordernumber=tt
+        qq=0
+        for i in range(ss):
+            qq += float(price[i])
+        o.allprice = qq
+        o.save()
+        for i in range(ss):
+            ct = Cart.objects.get(pk=int(cart_id[i]))
+            good = Goodsinfo.objects.get(pk=int(ct.goods.id))
+            info = Orderinfo()
+            info.order = o
+            info.goods = good
+            info.count = int(count[i])
+            info.allprice = float(price[i])
+            info.save()
+        for i in range(ss):
+            Cart.objects.get(pk=int(cart_id[i])).delete()
+        return JsonResponse({"status": "加入订单成功","cart_id":cart_id})
+
+#显示支付订单页面将未支付订单显示
+class Zhifudingdan(View):
+    @checklogin
+    def get(self, request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        address=Address.objects.filter(author=myuser.id)
+        order=Order.objects.filter(author=myuser.id,status="未支付")
+
+        if order:
+            order=order[0]
+
+            state={"state":1}
+            return render(request,"sellfresh/place_order.html",locals())
+        else:
+            state = {"state":0}
+            return render(request, "sellfresh/place_order.html",locals())
+    def post(self,request):
+        pass
+
+#在支付订单页面提交订单选择地址以及支付方式
+class Orderagain(View):
+    @checklogin
+    def post(self, request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        orderid=request.POST.get("orderid")
+        allprice=request.POST.get("allprice")
+        address=request.POST.get("address")
+        pay = request.POST.get("paystyle")
+        add=Address.objects.filter(address=address,author=myuser.id)[0]
+        oo=Order.objects.filter(ordernumber=orderid)[0]
+        oo.address=add
+        oo.pay=pay
+        # oo.allprice=float(allprice)
+        oo.status="待付款"
+        oo.save()
+        return JsonResponse({'statsus':'提交成功'})
+#对未付款订单进行付款
+class Updateorder(View):
+    @checklogin
+    def post(self, request):
+        username = request.user
+        myuser = Myuser.objects.filter(username=username)[0]
+        orderid=request.POST.get('orderid')
+        print(orderid)
+        oo=Order.objects.get(pk=orderid)
+        print(oo)
+        print(oo.status)
+        if oo.status == '待付款':
+            oo.status = '已付款'
+            oo.save()
+            return JsonResponse({"status": 0,"orderid":orderid})
+        elif oo.status == '已付款':
+            return JsonResponse({"status": 1,"orderid":orderid})
+
 #个人地址操作
 class AddAddress(View):
     @checklogin
@@ -192,6 +349,7 @@ class AddAddress(View):
         com.author = at
         com.save()
         return redirect(reverse("sellfresh:address", args=(at.id,username)))
+
 #同步加载地址
 class Alladdress(View):
     def post(self,request):

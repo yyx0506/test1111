@@ -38,11 +38,12 @@
                 总价：<em id="gprice">{{ good.price }}元</em>
             </div>
             <div class="operate_btn">
-                <a href="" class="buy_btn">立即购买</a>
-                <button type="submit" class="add_cart" id="add_cart">加入购物车</button>
+                <a href="javascript:" class="buy_btn" id="add_buy">立即购买</a>
+                <a href="javascript:" class="add_cart" id="add_cart">加入购物车</a>
             </div>
         </div>
 </div>
+
 <div class="main_wrap clearfix">
     <div class="l_wrap fl clearfix">
         <div class="new_goods">
@@ -85,6 +86,35 @@
 <div class="add_jump"></div>
 <script type="text/javascript">
     $(function () {
+        $("#add_cart").click(function () {
+            num = parseFloat($(".num_show").val())
+            price = parseFloat($("#oneprice").text())
+            total = num * price
+            console.log(num, price, total)
+            $.ajax({
+                url: "{% url 'sellfresh:addgoods' %}",
+                type: "post",
+                data: { "csrfmiddlewaretoken": "{{csrf_token}}",
+                        "num":num,
+                        "gid":"{{ good.id }}",
+                        "total":total,
+                        "oneprice":price},
+                success: function (data){
+                    alert(data.status)
+                    // a = Number($('#show_count').text())
+                    $('#show_count').text(data.count)
+            }
+            }
+            )
+
+        });
+        $("#add_buy").click(function () {
+            num = parseFloat($(".num_show").val())
+            price = parseFloat($("#oneprice").text())
+            total = num * price
+            console.log(num, price, total)
+        });
+
         $("#jia").click(function () {
             num = parseFloat($(".num_show").val())
             num += 1
@@ -92,7 +122,7 @@
             price = parseFloat($("#oneprice").text())
             total = num * price
             $("#gprice").text(total.toFixed(2) + "元")
-        })
+        });
         $("#jian").click(function () {
             num = parseFloat($(".num_show").val())
             if (num != 1) {
@@ -102,12 +132,28 @@
                 total = num * price
             }
             $("#gprice").text(total.toFixed(2) + "元")
-        })
+        });
         $(".num_show").blur(function () {
-            num = parseFloat($(".num_show").val())
+            count = $(this).val();
+            if(isNaN(count)){
+                alert("请输入数字");
+                $(this).val(1);
+                return;
+            } else if (count <= 0) {
+                alert("请输入正确的数量");
+                $(this).focus();
+                $(this).val(1);
+                return;
+            } else if (count >= 100) {
+                alert("数量不能超过100");
+                $(this).focus();
+                $(this).val(99);
+                return;
+            }
+            // num = parseFloat($(".num_show").val())
             price = parseFloat($("#oneprice").text())
-            total = num * price
-            console.log(num, price, total)
+            total = count * price
+            console.log(count, price, total)
             $("#gprice").text(total.toFixed(2) + "元")
         })
     })

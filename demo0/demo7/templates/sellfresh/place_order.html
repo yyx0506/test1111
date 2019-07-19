@@ -1,51 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>天天生鲜-提交订单</title>
-	<link rel="stylesheet" type="text/css" href="css/reset.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-</head>
-<body>
-	<div class="header_con">
-		<div class="header">
-			<div class="welcome fl">欢迎来到天天生鲜!</div>
-			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<a href="login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
-					<span>|</span>
-					<a href="cart.html">我的购物车</a>
-					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
-				</div>
-			</div>
-		</div>		
-	</div>
-
+{% extends 'sellfresh/base.html' %}
+{% block index %}
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<a href="{% url 'sellfresh:index' %}" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交订单</div>
 		<div class="search_con fr">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
 		</div>		
 	</div>
-	
+
 	<h3 class="common_title">确认收货地址</h3>
 
 	<div class="common_list_con clearfix">
 		<dl>
 			<dt>寄送到：</dt>
-			<dd><input type="radio" name="" checked="">北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
+			{% for i in address %}
+			{% if forloop.counter == 1 %}
+			<dd><input id='{{ i.id }}' type="radio" name="choose" checked >{{ i.address }}</dd>
+			{% else %}
+			<dd><input id='{{ i.id }}' type="radio" name="choose" >{{ i.address }}</dd>
+			{% endif %}
+			{% endfor %}
+
 		</dl>
 		<a href="user_center_site.html" class="edit_site">编辑收货地址</a>
 
@@ -59,14 +35,16 @@
 			<input type="radio" name="pay_style">
 			<label class="weixin">微信支付</label>
 			<input type="radio" name="pay_style">
-			<label class="zhifubao"></label>
+			<label class="zhifubao">支付宝</label>
 			<input type="radio" name="pay_style">
 			<label class="bank">银行卡支付</label>
+			<input type="radio" name="pay_style">
+			<label class="bank">朋友代付</label>
 		</div>
 	</div>
+	{% if state.state == 1 %}
 
-	<h3 class="common_title">商品列表</h3>
-	
+	<h3 class="common_title" id='{{ order.ordernumber }}'>商品列表<span>订单号：<span id="orderid">{{ order.ordernumber }}</span></span></h3>
 	<div class="common_list_con clearfix">
 		<ul class="goods_list_th clearfix">
 			<li class="col01">商品名称</li>
@@ -75,76 +53,94 @@
 			<li class="col04">数量</li>
 			<li class="col05">小计</li>		
 		</ul>
-		<ul class="goods_list_td clearfix">
+
+		{% for i in order.orderinfo_set.all %}
+
+		<ul class="goods_list_td clearfix" id="{{ i.id }}">
 			<li class="col01">1</li>			
-			<li class="col02"><img src="images/goods/goods012.jpg"></li>
-			<li class="col03">奇异果</li>
-			<li class="col04">500g</li>
-			<li class="col05">25.80元</li>
-			<li class="col06">1</li>
-			<li class="col07">25.80元</li>	
+			<li class="col02"><img src="/media/{{ i.goods.pic }}"></li>
+			<li class="col03">{{ i.goods.title }}</li>
+			<li class="col04">{{ i.goods.danwei }}</li>
+			<li class="col05">{{ i.goods.price }}元</li>
+			<li class="col06">{{ i.count }}</li>
+			<li class="col07">{{ i.allprice }}<span>元</span></li>
 		</ul>
-		<ul class="goods_list_td clearfix">
-			<li class="col01">2</li>			
-			<li class="col02"><img src="images/goods/goods003.jpg"></li>
-			<li class="col03">大兴大棚草莓</li>
-			<li class="col04">500g</li>
-			<li class="col05">16.80元</li>
-			<li class="col06">1</li>
-			<li class="col07">16.80元</li>	
-		</ul>
+		{% endfor %}
+
 	</div>
 
 	<h3 class="common_title">总金额结算</h3>
 
 	<div class="common_list_con clearfix">
 		<div class="settle_con">
-			<div class="total_goods_count">共<em>2</em>件商品，总金额<b>42.60元</b></div>
-			<div class="transit">运费：<b>10元</b></div>
-			<div class="total_pay">实付款：<b>52.60元</b></div>
+			<div class="total_goods_count">共<em>{{ order.orderinfo_set.count }}</em>件商品，总金额<b id="total">{{ order.allprice }}</b></div>
+
+			<div class="total_pay">实付款：<b id="totalall">{{ order.allprice }}<span>元</span></b></div>
 		</div>
 	</div>
-
 	<div class="order_submit clearfix">
 		<a href="javascript:;" id="order_btn">提交订单</a>
-	</div>	
-
-	<div class="footer">
-		<div class="foot_link">
-			<a href="#">关于我们</a>
-			<span>|</span>
-			<a href="#">联系我们</a>
-			<span>|</span>
-			<a href="#">招聘人才</a>
-			<span>|</span>
-			<a href="#">友情链接</a>		
-		</div>
-		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
-		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
+	{% else %}
+	<h3 class="common_title">没有可提交的订单</h3>
 
-	<div class="popup_con">
-		<div class="popup">
-			<p>订单提交成功！</p>
-		</div>
-		
-		<div class="mask"></div>
+	<div class="common_list_con clearfix">
+		<dl>
+			<dt>请到我的订单页面查看订单并评论</dt>
+		</dl>
+		<a href="{% url 'sellfresh:order' %}" class="edit_site">我的订单</a>
+
 	</div>
-	<script type="text/javascript" src="js/jquery-1.12.2.js"></script>
+	{% endif %}
+<script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
 	<script type="text/javascript">
-		$('#order_btn').click(function() {
-			localStorage.setItem('order_finish',2);
+		$('#order_btn').click(function () {
 
-			$('.popup_con').fadeIn('fast', function() {
+			allprice=$('#totalall').text()
+			orderid=$('#orderid').text()
+			address=$("input[name='choose']:checked").parent('dd').text();
+			paystyle=$("input[name='pay_style']:checked").next().text()
+			console.log(allprice,orderid,address,paystyle)
+			$.ajax({
+				url: "{% url 'sellfresh:orderagain' %}",
+                type: "post",
+                data: {
+                    "csrfmiddlewaretoken": "{{csrf_token}}",
+					"paystyle":paystyle,
+                    "orderid": orderid,
+                    "allprice": allprice,
+					"address": address,
 
-				setTimeout(function(){
-					$('.popup_con').fadeOut('fast',function(){
-						window.location.href = 'index.html';
-					});	
-				},3000)
-				
-			});
-		});
+                },success:function (data) {
+					console.log(data)
+					window.location="{% url 'sellfresh:order' %}"
+				}
+			})
+		})
+		// function total(){
+		// 	var total=0
+		// 	console.log("fdsafsa")
+		// 	$(".col07").each(function (){
+		// 		total1=$(this).val()
+		// 		total+=parseFloat(total1)
+		// 		console.log(total)
+		// 								})
+		// 	$('#total').text(total)
+		// }
+		// total()
+		// $('#order_btn').click(function() {
+		// 	localStorage.setItem('order_finish',2);
+		//
+		// 	$('.popup_con').fadeIn('fast', function() {
+		//
+		// 		setTimeout(function(){
+		// 			$('.popup_con').fadeOut('fast',function(){
+		// 				window.location.href = 'index.html';
+		// 			});
+		// 		},3000)
+		//
+		// 	});
+		// });
 	</script>
-</body>
-</html>
+{% endblock %}
+

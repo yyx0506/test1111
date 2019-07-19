@@ -27,22 +27,22 @@
     </div>
 
     <div class="r_wrap fr clearfix">
-        <div class="sort_bar">
-            <a  href="{% url 'goods:list' typeop.id 1 %}">
+        <div id="" class="sort_bar">
+            <a id="i1"  href="{% url 'goods:list' typeop.id 1 %}">
                 {% if choose == 1 %}
-                class="active"
+
                 {% endif %}默认</a>
-            <a href="{% url 'goods:list' typeop.id 2 %}">
+            <a id="i2" href="{% url 'goods:list' typeop.id 2 %}">
                 {% if choose == 2 %}
-                class="active"
+
                 {% endif %}价格从低到高</a>
-            <a href="{% url 'goods:list' typeop.id 3 %}">
+            <a id="i3" href="{% url 'goods:list' typeop.id 3 %}">
                 {% if choose == 3 %}
-                class="active"
+
                 {% endif %}价格从高到低</a>
-            <a href="{% url 'goods:list' typeop.id 4 %}">
+            <a id="i4" href="{% url 'goods:list' typeop.id 4 %}">
                 {% if choose == 4 %}
-                class="active"
+
                 {% endif %}人气</a>
 
         </div>
@@ -96,5 +96,25 @@
         </div>
     </div>
 </div>
+<script>
+    // $("#i1").click(function () {
+    //     $("#i1").siblings("a").removeClass("active")
+	// 	$("#i1").attr('class','active')
+    // });
+    // $("#i2").click(function () {
+    //     $("#i2").siblings("a").removeClass("active")
+	// 	$("#i2").attr('class','active')
+    // });
+    // $("#i3").click(function () {
+    //     $("#i3").siblings("a").removeClass("active")
+	// 	$("#i3").attr('class','active')
+    // });
+    // $("#i4").click(function () {
+    //     $("#i4").siblings("a").removeClass("active")
+	// 	$("#i4").attr('class','active')
+    // });
 
+
+
+</script>
 {% endblock %}

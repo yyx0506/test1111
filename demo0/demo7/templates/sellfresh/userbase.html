@@ -40,7 +40,7 @@
 					<span>|</span>
 					<a href="{% url 'sellfresh:cart' %}">我的购物车</a>
 					<span>|</span>
-					<a href="{% url 'sellfresh:order' %}">我的订单</a>
+					<a href="{% url 'sellfresh:myorder' %}">我的订单</a>
 				</div>
 			</div>
 		</div>
@@ -53,16 +53,11 @@
 			<input type="button" class="input_btn fr" name="" value="搜索">
 		</div>
 	</div>
-	<div class="main_con clearfix">
-		<div class="left_menu_con clearfix">
-			<h3>用户中心</h3>
-			<ul>
-				<li><a href="{% url 'sellfresh:usercenter' %}" class="active">· 个人信息</a></li>
-				<li><a href="{% url 'sellfresh:order' %}">· 全部订单</a></li>
-				<li><a href="{% url 'sellfresh:address' %}">· 收货地址</a></li>
-			</ul>
-		</div>
 
+	<div class="main_con clearfix">
+		{% block status %}
+
+		{% endblock %}
         {% block body %}
         {% endblock %}
 

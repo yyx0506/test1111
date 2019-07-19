@@ -1,4 +1,14 @@
 {% extends 'sellfresh/userbase.html' %}
+{% block status %}
+<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="{% url 'sellfresh:usercenter' %}" >· 个人信息</a></li>
+				<li><a href="{% url 'sellfresh:order' %}" >· 全部订单</a></li>
+				<li><a href="{% url 'sellfresh:address' %}" class="active">· 收货地址</a></li>
+			</ul>
+		</div>
+{% endblock %}
 {% block body %}
 <div class="right_content clearfix">
     <h3 class="common_title2">收货地址</h3>
@@ -59,7 +69,7 @@
                     $('#id_address').val("")
                     $('#id_zip').val("")
                     $('#id_telephone').val("")
-                    $('#addresslist').append('<p>联系人:' + data.person + '</p><p>详细地址' + data.address + '</p><p>邮编:' + data.zip + ' }}</p><p>电话:' + data.telephone + '</p>');
+                    $('#addresslist').append('<p>联系人:' + data.person + '</p><p>详细地址:' + data.address + '</p><p>邮编:' + data.zip + '</p><p>电话:' + data.telephone + '</p><hr>');
                 }
             })
         })

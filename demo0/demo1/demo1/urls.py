@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url,include
-
-#在项目根路由下方引入应用路由配置文件
+import time
+tt=str(int(time.time()*1000000))[6:16]
+# print(tt)
+# #在项目根路由下方引入应用路由配置文件
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('', include('booktest.urls',namespace='booktest')),
